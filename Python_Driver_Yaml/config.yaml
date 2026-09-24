@@ -1,0 +1,19 @@
+---
+# Cisco Modeling Labs (CML) Scaled Testbed Inventory
+target_nodes:
+  - hostname: "core_router_01"
+    device_type: "cisco_ios"
+    host: "192.168.91.130"
+    username: "admin"
+    password: "Cisco123"
+
+  - hostname: "dist_switch_01"
+    device_type: "cisco_ios"
+    host: "192.168.91.131" # Simulated secondary target node
+    username: "admin"
+    password: "Cisco123"
+
+audit_parameters:
+  target_command: "show ip interface brief"
+  required_status: "up"
+  required_protocol: "up"

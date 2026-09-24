@@ -1,0 +1,14 @@
+# Local Environment Variables Configuration Shield
+.env
+
+# Local Virtual Environments Dependency Isolation
+.venv313/
+venv/
+
+# IDE Configuration Workspace Metadata
+.idea/
+.vscode/
+
+# Local Operating System Temporary Junk
+*.pyc
+__pycache__/

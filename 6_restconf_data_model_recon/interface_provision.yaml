@@ -1,0 +1,25 @@
+# =========================================================================
+# FILE: interface_provision.yaml
+# DESCRIPTION: State-Changing Structured Configuration Payload Template
+# =========================================================================
+
+cisco_ios_xe_interface_update:
+  target_router: "192.168.91.132"
+  interfaces:
+    - name: "2"
+      description: "PRODUCTION_BACKBONE_LINK_GE2"
+      ip_address: "10.0.2.1"
+      netmask: "255.255.255.0"
+      status: "UP"
+
+    - name: "3"
+      description: "AUTOMATED_FAILOVER_VAULT_GE3"
+      ip_address: "10.0.3.1"
+      netmask: "255.299.255.0"
+      status: "UP"
+
+    - name: "4"
+      description: "SRE_OOB_MANAGEMENT_PIPE_GE4"
+      ip_address: "10.0.4.1"
+      netmask: "255.255.255.0"
+      status: "UP"
