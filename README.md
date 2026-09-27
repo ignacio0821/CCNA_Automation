@@ -1,13 +1,15 @@
-# CCNA_Automation_Prep (Active WIP Architecture)
+# CCNA Network Programmability & Automation Portfolio
 
-Enterprise network infrastructure automation workspace tracking live script implementation, YANG data model schemas, and state validation configurations across virtualized Cisco IOS-XE environments.
+https://github.com/ignacio0821/CCNA_Automation
 
-## 📡 Active Wire Telemetry Baselines & Proof-of-Work
-* **Wire Record Captured:** Live protocol exchanges have been fully captured and preserved on permanent storage at `6_restconf_data_model_recon/Wireshark_captures/restconf_wire_recon_B.pcapng`.
-* **Protocol Verification:** Wire traces explicitly confirm RFC 8040 transport specification compliance (`Accept: application/yang-data+json`) over Port 443 TLS.
+## 📌 Overview
+A production-grade network automation repository documenting programmatic device abstractions, model-driven telemetries, RESTful infrastructure interfaces, and discrete mathematical proof engines built from first principles for enterprise infrastructure environments.
 
-## 🧠 Master Core Automation Roadmap
-- [x] **Phase 1: Live Wire Telemetry Transport Recon** (Isolated VMnet8 traffic and verified YANG JSON layout headers).
-- [x] **Phase 2: Declarative YAML-Driven State Provisioning** (Ingested user data from `.yaml` templates to programmatically provision static IP blocks via HTTP PATCH).
-- [x] **Phase 3: Automated Exception Interception & Step 11 Self-Healing Loops** (Intentionally poisoned data templates with Chaos Monkey values to verify fallback quarantine behaviors).
-- [ ] **Phase 4: Automated CI/CD Pipeline Sanitization Checks** (Staging automated Python code hygiene checking scripts for Sunday's deep-dive execution block).
+## 📂 Repository Architecture
+* **01_Device_CLI_Architecture/** - Structured configuration generators, multithreaded CLI orchestration engines, and parsing architectures.
+* **02_RESTCONF_Programmability/** - Model-driven programmable interfaces, YANG data model reconciliation, and JSON payload manipulation matrices.
+* **03_Vendor_Scaffolding_Reference/** - Structured reference architectures, enterprise blueprint testing frameworks, and multi-node lab scaffolding notes.
+* **04_Mathematical_Automation/** - Algorithmic set theory modeling, bitwise switch state trackers, and discrete logic-to-infrastructure code engines.
+
+## 🛠️ Automated CI/CD
+This repository utilizes a localized **GitHub Actions CI/CD Pipeline** to enforce strict code formatting and PEP 8 compliance checks across all automation modules using Black.
