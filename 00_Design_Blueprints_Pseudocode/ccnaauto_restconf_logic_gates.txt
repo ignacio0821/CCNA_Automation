@@ -1,0 +1,19 @@
+================================================================================
+CCNA_AUTOMATION: RESTCONF MULTI-NODE SYSTEM OVERVIEW BLUEPRINT
+================================================================================
+
+START FUNCTION: scan_cluster_baselines
+    FOR EACH host_node IN production_inventory_matrix DO:
+        EXECUTE RESTCONF HTTP-GET Request:
+            Target Schema: Model-Driven YANG Container Interface
+            Headers: Accept application/yang-data+json
+
+        IF response.status_code EQUALS 200 THEN
+            PARSE JSON Payload configuration attributes
+            LOG operational telemetry variables to central database
+        ELSE
+            FLAG connection anomalies and alert infrastructure layers
+        END IF
+    END FOR
+END FUNCTION
+================================================================================
