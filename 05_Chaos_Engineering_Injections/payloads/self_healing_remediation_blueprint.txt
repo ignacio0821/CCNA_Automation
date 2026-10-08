@@ -1,0 +1,21 @@
+======================================================================================
+               THE PROGRAMMATIC SELF-HEALING AUTOMATION PIPELINE
+======================================================================================
+
+     [ RESTCONF Ingestion Attempt ] ---> Generates HTTP 401 Unauthorized Lockout
+                                                    |
+                                                    v
+     [ Programmatic Catch Block ] ------> Intercepts the HTTPError status token
+                                                    |
+                                                    v
+     [ Alternate Transport Trigger ] ---> Automatically initializes Netmiko SSH tunnel
+                                                    |
+                                                    v
+     [ Configuration Push Engine ] -----> Pushes "aaa authorization exec default local"
+                                                    |
+                                                    v
+     [ RESTCONF Retry Validation ] -----> Automatically re-attempts HTTP PATCH State Push
+                                                    |
+                                                    v
+     [ VERIFICATION MATRIX ] -----------> Terminal logs SUCCESS; Wireshark records the fix!
+======================================================================================

@@ -6,12 +6,15 @@ A production-grade network automation repository documenting programmatic device
 
 | Engineering Directory | Operational Focus & Target Asset |
 | :--- | :--- |
-| **`00_Design_Blueprints_Pseudocode`** | Language-agnostic logic gates and structural flow blueprints for RESTful data parsing. |
-| **`01_Device_CLI_Architecture`** | Structured configuration generators, multithreaded CLI orchestration engines, and text parsing architectures. |
-| **`02_RESTCONF_Programmability`** | Model-driven programmable interfaces, YANG data model reconciliation, and JSON payload manipulation matrices. |
-| **`03_Vendor_Scaffolding_Reference`** | Structured reference architectures, enterprise blueprint testing frameworks, and multi-node lab scaffolding notes. |
-| **`04_Mathematical_Automation`** | Algorithmic set theory modeling, bitwise switch state trackers, and discrete logic-to-infrastructure code engines. |
-| **`Assets`** | Authoritative production inventory matrix reference configurations. |
+| **00_Design_Blueprints_Pseudocode** | Language-agnostic logic gates and structural flow blueprints for RESTCONF/Netmiko tasks. |
+| **01_Device_CLI_Architecture** | Structured configuration generators, multithreaded CLI orchestration engines, and SSH scripts. |
+| **02_RESTCONF_Programmability** | Model-driven programmable interfaces, YANG data model reconciliation, and manual URI drilling. |
+| **03_Vendor_Scaffolding_Reference** | Structured reference architectures, enterprise blueprint testing frameworks, and multi-vendor paradigms. |
+| **04_Mathematical_Automation** | Algorithmic set theory modeling, bitwise switch state trackers, and discrete calculation frameworks. |
+| **05_Chaos_Engineering_Injections** | Fault injection modeling, AAA configuration mutation tracking, and emergency programmatic recovery modules. |
+| **06_Packet_Analysis_Telemetry** | Decrypted crypto-handshake traces (`ssh.protocol`), customized Wireshark profiles, and traffic delta telemetry. |
+| **07_Configuration_Matrices** | Weekly production state deployment documentation, interface maps, and node-by-node baseline verification text files. |
+| **Assets** | Authoritative production inventory matrix reference configurations, environmental variables, and configurations. |
 
 ---
 

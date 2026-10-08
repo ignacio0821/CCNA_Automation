@@ -1,0 +1,19 @@
+================================================================================
+LAB EPISODE: RESTCONF NATIVE INTERFACE GET TELEMETRY
+TIMESTAMP: October 6, 2026
+================================================================================
+1. CONTROL PLANE TELEMETRY:
+- Target Endpoint: https://192.168.91.132/restconf/data/Cisco-IOS-XE-native:native/interface
+- HTTP Status Code: 200 OK
+- API Execution Latency: 2.70 seconds (Indicates high internal data-store parsing overhead)
+- Payload Size: 1.88 KB (1,925 bytes)
+
+2. TRANSPORT LAYER MECHANICS (WIRESHARK ANALYSIS):
+- Protocol: TLSv1.2 / TLSv1.3 (TCP Port 443)
+- MTU Boundary: 1500 Bytes
+- Max Segment Size (MSS): 1460 Bytes (Negotiated during 3-way TCP Handshake)
+- Segmentation Breakdown:
+  * Segment 1 (Data): 1460 Bytes payload (Wireshark Frame Length: ~1514 Bytes)
+  * Segment 2 (Final): 465 Bytes payload (Carries [PSH, ACK] flags to trigger application ingestion)
+- Reassembly Engine: OS TCP Stack successfully unified packets using sequence numbers.
+================================================================================
