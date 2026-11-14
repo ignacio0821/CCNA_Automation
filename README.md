@@ -14,8 +14,11 @@ A production-grade network automation repository documenting programmatic device
 | **05_Chaos_Engineering_Injections** | Fault injection modeling, AAA configuration mutation tracking, and emergency programmatic recovery modules. |
 | **06_Packet_Analysis_Telemetry** | Decrypted crypto-handshake traces (`ssh.protocol`), customized Wireshark profiles, and traffic delta telemetry. |
 | **07_Configuration_Matrices** | Weekly production state deployment documentation, interface maps, and node-by-node baseline verification text files. |
+| **08_Postman_Collections_Environments** | Sanitized RESTCONF API collections and environment variable templates with zero hardcoded credentials. |
+| **09_CICD_Validation_Workflows** | Automated CI/CD linting (`Black`), syntax verification (`compileall`), and `detect-secrets` pre-commit gates. |
+| **10_Logging_Anomalies_Outputs** | Structured JSON execution logs, HTTP status audit trails, and self-healing rollback records. |
+| **11_Enterprise_Security_Compliance_Blueprints** | Zero-trust RBAC privilege-15 policies, TLSv1.3 transport standards, and OWASP secret-hygiene controls. |
 | **Assets** | Authoritative production inventory matrix reference configurations, environmental variables, and configurations. |
-
 ---
 
 ## 🚀 Automated CI/CD
