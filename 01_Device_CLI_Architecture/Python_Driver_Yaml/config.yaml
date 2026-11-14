@@ -3,15 +3,15 @@
 target_nodes:
   - hostname: "core_router_01"
     device_type: "cisco_ios"
-    host: "192.168.91.130"
-    username: "admin"
-    password: "Cisco123"
+    host: "198.51.100.10"
+    username: "${CML_USERNAME}"
+    cred_env_var: "CML_PASSWORD"
 
   - hostname: "dist_switch_01"
     device_type: "cisco_ios"
-    host: "192.168.91.131" # Simulated secondary target node
-    username: "admin"
-    password: "Cisco123"
+    host: "198.51.100.11" # Simulated secondary target node
+    username: "${CML_USERNAME}"
+    cred_env_var: "CML_PASSWORD"
 
 audit_parameters:
   target_command: "show ip interface brief"

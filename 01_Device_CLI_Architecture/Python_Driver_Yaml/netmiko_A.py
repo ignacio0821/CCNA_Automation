@@ -1,12 +1,16 @@
+import os
+from dotenv import load_dotenv
 from netmiko import ConnectHandler
 from netmiko.exceptions import NetmikoTimeoutException, NetmikoAuthenticationException
+
+load_dotenv()
 
 # Define the connection parameters matching your live CML state
 router_profile = {
     "device_type": "cisco_ios",
-    "host": "192.168.91.130",  # Your exact live DHCP IP
-    "username": "admin",
-    "password": "Cisco123",
+    "host": os.getenv("NETMIKO_A_HOST", "198.51.100.10"),
+    "username": os.getenv("CML_USERNAME", "netops_admin"),
+    "password": os.environ["CML_PASSWORD"],
 }
 
 try:

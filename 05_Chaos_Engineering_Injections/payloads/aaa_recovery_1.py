@@ -1,14 +1,18 @@
 import sys
+import os
+from dotenv import load_dotenv
 from netmiko import ConnectHandler
 from netmiko.exceptions import NetmikoTimeoutException, NetmikoAuthenticationException
+
+load_dotenv()
 
 # 1. Target Parameters (Modify values inline for your local CML topology)
 device = {
     "device_type": "cisco_ios",
-    "host": "192.168.91.134",  # Replace with Edge-01 IP
-    "username": "admin",
-    "password": "Cisco123",
-    "secret": "Cisco123",
+    "host": os.getenv("EDGE01_HOST", "198.51.100.1"),
+    "username": os.getenv("CML_USERNAME", "netops_admin"),
+    "password": os.environ["CML_PASSWORD"],
+    "secret": os.environ["CML_SECRET"],
     "fast_cli": False,  # Keep False to ensure step-by-step buffer processing during lock state
 }
 

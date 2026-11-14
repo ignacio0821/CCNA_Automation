@@ -1,0 +1,33 @@
+======================================================================================
+STEP 9: YAML-TO-JSON SERIALIZATION & INTERFACE STATE MUTATION MAP
+======================================================================================
+
+       INBOUND DATA SOURCE (YAML)                     TARGET WIRE PAYLOAD (JSON MAP)
+   ==================================               ==================================
+   target_interface:                                {
+     type: "GigabitEthernet" ---------\               "Cisco-IOS-XE-native:GigabitEthernet": [
+     slot_id: "2" ---------------------\--------------> {
+     configuration_state:               \                 "name": "2",
+       description: "DOM_PROD_..." ------\---------------> "description": "DOM_PROD_...",
+       enabled: true                      \               "ip": {
+       ip_assignment:                      \                "address": {
+         ipv4_address: "10.255.0.11" -----\ \                 "primary": {
+         subnet_mask: "255.255.255.0" -----\ \------------------> "address": "10.255.0.11",
+                                            \-------------------> "mask": "255.255.255.0"
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+
+======================================================================================
+TECHNICAL CONSTRAINTS & DESIGN NOTES:
+1. RESTCONF IDEMPOTENT MUTATION PATTERN:
+   - Method: HTTP PATCH
+   - Endpoint: /restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=2
+2. VALUE EXTRACTION MECHANICS:
+   - The type attribute dictates the JSON dictionary module root parameter string.
+   - The slot_id matches directly down to the 'name' primary list key wrapper.
+   - Chained dictionary traversal arrays safeguard against missing configuration keys.
+======================================================================================

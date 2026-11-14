@@ -1,0 +1,16 @@
+# ==============================================================================
+# INFRASTRUCTURE DEPLOYMENT TEMPLATE: cml_interface_state.yaml
+# TARGET SCHEMATIC: STATE-CHANGING ENGINE PIPELINE
+# ==============================================================================
+
+---
+target_interface:
+  type: "GigabitEthernet"
+  slot_id: "2"
+  configuration_state:
+    description: "DOM_PRODUCTION_BACKBONE"
+    enabled: true
+    ip_assignment:
+      static: true
+      ipv4_address: "10.255.0.11"
+      subnet_mask: "255.255.255.0"

@@ -1,0 +1,47 @@
+[INPUT STREAM] ➔ Raw JSON Byte Array/String (Cisco-IOS-XE-native:interface payload)
+       │
+       ▼
+[STEP 1: Root Dictionary Key Validation]
+       │ Does Key "Cisco-IOS-XE-native:interface" exist in Root?
+       ├─── NO  ➔ [RAISE EXCEPTION] "Invalid Data Schema Model"
+       └─── YES ➔ Extract Nested Value Object ➔ Pass to Step 2
+       │
+       ▼
+[STEP 2: Target Collection Extraction]
+       │ Does Key "GigabitEthernet" exist in Target Object?
+       ├─── NO  ➔ [RAISE EXCEPTION] "Target Interface Array Missing"
+       └─── YES ➔ Isolate Object Array ➔ Initialize Loop ➔ Pass to Step 3
+       │
+       ▼
+[STEP 3: Loop Iteration over Interface Elements]
+       │ For Each Element in "GigabitEthernet" Array:
+       │
+       ├─── [GATE A: Administrative State Check]
+       │       │ Does Key "shutdown" exist in current Element?
+       │       ├─── YES ➔ Set State = "DOWN" ➔ Jump to Output Log (Skip IP Parsing)
+       │       └─── NO  ➔ Set State = "UP" ➔ Advance to GATE B
+       │
+       ├─── [GATE B: Interface Addressing Sub-Tree Inspection]
+       │       │ Does Key "ip" exist in current Element?
+       │       ├─── NO  ➔ Set IPv4 = "UNCONFIGURED" ➔ Advance to GATE C (IPv6 Evaluation)
+       │       └─── YES ➔ Inspect Inner Key "address"
+       │                   │
+       │                   ├─── Does Sub-Key "dhcp" exist?
+       │                   │       └─── YES ➔ Set IPv4 = "DHCP_ASSIGNED"
+       │                   │
+       │                   └─── Does Sub-Key "primary" exist?
+       │                           └─── YES ➔ Extract "address" and "mask" strings
+       │                                    ➔ Set IPv4 = [Address/Mask String]
+       │
+       └─── [GATE C: Multi-Protocol Protocol Fork]
+               │ Does Key "ipv6" exist in current Element?
+               ├─── NO  ➔ Set IPv6 = "UNCONFIGURED" ➔ Advance to Output Log
+               └─── YES ➔ Extract Array "prefix-list"
+                        ➔ Initialize Sub-Loop over List Elements
+                        ➔ For Each Item in List:
+                             ➔ Extract Value string from Key "prefix"
+                             ➔ Append to IPv6 Array ➔ Advance to Output Log
+
+       │
+       ▼
+[OUTPUT VECTOR] ➔ Consolidated Structural Record per Element (Name, State, IPv4, IPv6 List)

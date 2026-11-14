@@ -1,17 +1,20 @@
+import os
+from dotenv import load_dotenv
 import requests
 import urllib3
+
+load_dotenv()
 
 # Suppress insecure HTTPS warning outputs inside local/sandbox execution silos
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # STEP 4: CLEAN INVENTORY DICTIONARY BLOCK
 TARGET_NODE = {
-    "host": "192.168.91.132",
+    "host": os.getenv("CML_ROUTER_IP", "198.51.100.1"),
     "port": 443,
-    "username": "admin",
-    "password": "Cisco123"
+    "username": os.getenv("CML_USERNAME", "netops_admin"),
+    "password": os.environ["CML_PASSWORD"],
 }
-
 
 def verify_data_plane_reachability():
     # Build complete destination URI explicitly
