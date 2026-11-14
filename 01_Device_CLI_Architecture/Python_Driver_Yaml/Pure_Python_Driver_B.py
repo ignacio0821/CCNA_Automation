@@ -3,6 +3,7 @@
 import yaml
 import json
 
+
 def process_network_matrix(file_path):
     # Intentional execution check: open file stream securely
     try:
@@ -39,48 +40,12 @@ def process_network_matrix(file_path):
             # Identify traffic engineering priority
             path_role = "PRIMARY" if metric_value == 10 else "BACKUP"
 
-            print(f"  -> Interface: {int_name} | IP: {ip_addr:<18} | Metric: {metric_value} [{path_role}]")
-        print("-"* 65)
+            print(
+                f"  -> Interface: {int_name} | IP: {ip_addr:<18} | Metric: {metric_value} [{path_role}]"
+            )
+        print("-" * 65)
 
 
 # Example invocation for local system test loops
 if __name__ == "__main__":
     process_network_matrix("topology.yaml")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

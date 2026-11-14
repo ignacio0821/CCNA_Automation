@@ -20,7 +20,7 @@ def main():
     # Production RFC 8040 Header Matrix targeting YANG-modeled JSON
     HEADERS = {
         "Accept": "application/yang-data+json",
-        "Content-Type": "application/yang-data+json"
+        "Content-Type": "application/yang-data+json",
     }
 
     # Live credentials for the virtualized laboratory node
@@ -36,7 +36,7 @@ def main():
             url=URL,
             headers=HEADERS,
             auth=AUTH,
-            verify=False  # Bypass SSL check for sandbox isolation safety
+            verify=False,  # Bypass SSL check for sandbox isolation safety
         )
 
         # Intercept HTTP errors (e.g., 401 Unauthorized, 404 Not Found) before parsing
@@ -46,7 +46,9 @@ def main():
         network_data = response.json()
 
         # 3. Navigate Document Structural Tree Boundary cleanly
-        interface_list = network_data["Cisco-IOS-XE-native:interface"]["GigabitEthernet"]
+        interface_list = network_data["Cisco-IOS-XE-native:interface"][
+            "GigabitEthernet"
+        ]
 
         print("\n" + "=" * 55)
         print("         OFFICIAL LIVE CORE DEVICE AUDIT REPORT         ")
@@ -87,13 +89,21 @@ def main():
         print("============= END OF PRODUCTION DEVICE AUDIT =============\n")
 
     except requests.exceptions.HTTPError as http_error:
-        print(f"\n[!] TRANSPORT FAILURE: HTTP protocol failure. Code: {response.status_code}")
+        print(
+            f"\n[!] TRANSPORT FAILURE: HTTP protocol failure. Code: {response.status_code}"
+        )
         print(f"Details: {http_error}")
     except requests.exceptions.ConnectionError:
-        print(f"\n[!] LINK FAILURE: Cannot establish socket with router at {ROUTER_IP}.")
-        print("Verify CML node state, routing paths, and that RESTCONF is enabled via 'restconf'.")
+        print(
+            f"\n[!] LINK FAILURE: Cannot establish socket with router at {ROUTER_IP}."
+        )
+        print(
+            "Verify CML node state, routing paths, and that RESTCONF is enabled via 'restconf'."
+        )
     except (KeyError, TypeError) as schema_error:
-        print(f"\n[!] SCHEMA MISMATCH: The incoming YANG data structure layout has drifted.")
+        print(
+            f"\n[!] SCHEMA MISMATCH: The incoming YANG data structure layout has drifted."
+        )
         print(f"Root parsing error: {schema_error}")
 
 

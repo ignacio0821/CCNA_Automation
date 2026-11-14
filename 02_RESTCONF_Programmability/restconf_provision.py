@@ -17,6 +17,7 @@ load_dotenv()
 # Suppress local self-signed SSL tracking warnings in our sandbox lab
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+
 def load_yaml_template(file_path):
     """Ingests local YAML configuration file and returns a structured dictionary."""
     with open(file_path, "r") as file_stream:
@@ -54,7 +55,7 @@ def main():
 
         headers = {
             "Accept": "application/yang-data+json",
-            "Content-Type": "application/yang-data+json"
+            "Content-Type": "application/yang-data+json",
         }
 
         auth = HTTPBasicAuth("admin", "Cisco123")
@@ -69,10 +70,10 @@ def main():
                     "address": {
                         "primary": {
                             "address": ip_addr,
-                            "mask": subnet_mask  # <-- Core Cisco YANG model fix
+                            "mask": subnet_mask,  # <-- Core Cisco YANG model fix
                         }
                     }
-                }
+                },
             }
         }
 
@@ -80,35 +81,39 @@ def main():
         if interface["status"].upper() != "UP":
             yang_payload["Cisco-IOS-XE-native:GigabitEthernet"]["shutdown"] = [None]
 
-        print(f"\n[+] Provisioning GigabitEthernet{port_id} via individual leaf endpoint...")
+        print(
+            f"\n[+] Provisioning GigabitEthernet{port_id} via individual leaf endpoint..."
+        )
         print(f"    IP Target   : {ip_addr} / {subnet_mask}")
         print(f"    Description : {description}")
 
         try:
             # 4. Execute the Programmatic State Push using HTTP PATCH
             response = requests.patch(
-                url=url,
-                headers=headers,
-                auth=auth,
-                json=yang_payload,
-                verify=False
+                url=url, headers=headers, auth=auth, json=yang_payload, verify=False
             )
 
             response.raise_for_status()
 
             # A successful RESTCONF PATCH configuration merge returns an explicit 204 No Content code
             if response.status_code in [200, 204]:
-                print(f"----> SUCCESS: GigabitEthernet{port_id} merged cleanly. Status: {response.status_code}")
+                print(
+                    f"----> SUCCESS: GigabitEthernet{port_id} merged cleanly. Status: {response.status_code}"
+                )
 
         except requests.exceptions.HTTPError as http_err:
-            print(f"----> [!] PROVISIONING FAILED ON PORT {port_id}. Code: {response.status_code}")
+            print(
+                f"----> [!] PROVISIONING FAILED ON PORT {port_id}. Code: {response.status_code}"
+            )
             print(f"      Payload Sent: {yang_payload}")
             print(f"      Root Cause  : {http_err}")
 
             # =================================================================
             # STEP 11: AUTOMATED SELF-HEALING REMEDIATION ACTIVE TRIGGER
             # =================================================================
-            print(f"\n[!] TRIGGERING STEP 11: SELF-HEALING REMEDIATION ON PORT {port_id}...")
+            print(
+                f"\n[!] TRIGGERING STEP 11: SELF-HEALING REMEDIATION ON PORT {port_id}..."
+            )
 
             # Define a secure, unconfigured fallback state payload with the correct native 'mask' key
             self_healing_payload = {
@@ -119,10 +124,10 @@ def main():
                         "address": {
                             "primary": {
                                 "address": "10.254.254.254",  # Safe quarantine sandbox IP
-                                "mask": "255.255.255.252"
+                                "mask": "255.255.255.252",
                             }
                         }
-                    }
+                    },
                 }
             }
 
@@ -133,15 +138,17 @@ def main():
                     headers=headers,
                     auth=auth,
                     json=self_healing_payload,
-                    verify=False
+                    verify=False,
                 )
                 remediation_response.raise_for_status()
                 print(
-                    f"----> SELF-HEAL SUCCESS: Port {port_id} safely quarantined to baseline. Code: {remediation_response.status_code}")
+                    f"----> SELF-HEAL SUCCESS: Port {port_id} safely quarantined to baseline. Code: {remediation_response.status_code}"
+                )
                 print("-" * 55)
             except requests.exceptions.RequestException as fatal_heal_error:
                 print(
-                    f"----> [CRITICAL] SELF-HEALING FAILURE: Unable to remediate device layer. Details: {fatal_heal_error}")
+                    f"----> [CRITICAL] SELF-HEALING FAILURE: Unable to remediate device layer. Details: {fatal_heal_error}"
+                )
                 print("-" * 55)
 
 

@@ -20,7 +20,9 @@ console_url = f"https://{CML_HOST}/api/v0/labs/{LAB_ID}/nodes/{NODE_ID}/console"
 print("[>] Launching programmatic Out-of-Band Hypervisor break-in...")
 
 # Serial command payload to force configuration healing without network AAA checks
-repair_payload = "\r\nconfigure terminal\r\naaa authorization exec default local\r\nend\r\n"
+repair_payload = (
+    "\r\nconfigure terminal\r\naaa authorization exec default local\r\nend\r\n"
+)
 
 try:
     response = requests.put(
@@ -29,12 +31,16 @@ try:
         data=repair_payload,
         auth=cml_auth,
         verify=False,
-        timeout=5.0
+        timeout=5.0,
     )
     if response.status_code == 200:
-        print("[++] SUCCESS: CML Hypervisor programmatically healed the control plane over virtual serial connection!")
+        print(
+            "[++] SUCCESS: CML Hypervisor programmatically healed the control plane over virtual serial connection!"
+        )
     else:
-        print(f"[-] Hypervisor rejected command injection. Code: {response.status_code}")
+        print(
+            f"[-] Hypervisor rejected command injection. Code: {response.status_code}"
+        )
 
 except requests.exceptions.RequestException as err:
     print(f"[-] Infrastructure injection failed: {err}")

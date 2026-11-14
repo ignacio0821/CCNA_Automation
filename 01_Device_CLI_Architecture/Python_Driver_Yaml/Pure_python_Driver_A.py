@@ -3,6 +3,7 @@
 import yaml
 import json
 
+
 def process_network_matrix(file_path):
     # Intentional execution check: open file stream securely
     try:
@@ -39,8 +40,10 @@ def process_network_matrix(file_path):
             # Identify traffic engineering priority
             path_role = "PRIMARY" if metric_value == 10 else "BACKUP"
 
-            print(f"   -> Interface: {int_name} | IP: {ip_addr:<18} | Metric: {metric_value} [{path_role}]")
-        print("_"* 65)
+            print(
+                f"   -> Interface: {int_name} | IP: {ip_addr:<18} | Metric: {metric_value} [{path_role}]"
+            )
+        print("_" * 65)
 
 
 # Example invocation for local system test loops

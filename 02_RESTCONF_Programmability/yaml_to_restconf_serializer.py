@@ -28,10 +28,10 @@ def serialize_yaml_to_json(yaml_filepath: str) -> str:
                             "address": {
                                 "primary": {
                                     "address": ip_cfg["ipv4_address"],
-                                    "mask": ip_cfg["subnet_mask"]
+                                    "mask": ip_cfg["subnet_mask"],
                                 }
                             }
-                        }
+                        },
                     }
                 ]
             }

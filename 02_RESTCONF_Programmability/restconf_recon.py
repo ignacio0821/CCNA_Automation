@@ -14,13 +14,8 @@ mock_restconf_payload = {
                 "type": "iana-if-type:ethernetCsmacd",
                 "enabled": True,
                 "ietf-ip:ipv4": {
-                    "address": [
-                        {
-                            "ip": "192.168.91.130",
-                            "netmask": "255.255.255.0"
-                        }
-                    ]
-                }
+                    "address": [{"ip": "192.168.91.130", "netmask": "255.255.255.0"}]
+                },
             }
         ]
     }
@@ -69,7 +64,6 @@ mock_restconf_payload = {
 #         STEP 4: Extract the final "ip" field value and print it out.
 
 
-
 # ======================================================================================
 # RELOAD BLUEPRINT: STEP 5 STRUCTURED PSEUDOCODE FORGE
 # ======================================================================================
@@ -91,7 +85,6 @@ mock_restconf_payload = {
 #      -> Step 4: Extract "name" value
 #      -> Step 5: Navigate down "ietf-ip:ipv4" -> "address" -> index 0 -> "ip"
 # ======================================================================================
-
 
 
 # CONSTRUCT MultiInterfaceExtractor:

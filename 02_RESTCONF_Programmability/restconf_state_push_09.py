@@ -7,6 +7,7 @@ from yaml_to_restconf_serializer import serialize_yaml_to_json
 # Suppress self-signed certificate warnings for local CML testing
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+
 def save_running_config(host: str, username: str, password: str, headers: dict) -> None:
     """Executes Cisco IOS-XE RESTCONF RPC to save running-config to NVRAM (write memory)."""
     rpc_url = f"https://{host}/restconf/operations/cisco-ia:save-config"
@@ -23,9 +24,13 @@ def save_running_config(host: str, username: str, password: str, headers: dict) 
         )
 
         if rpc_response.status_code in (200, 204):
-            print(f"[SUCCESS] HTTP {rpc_response.status_code}: Configuration saved to NVRAM (write memory complete).")
+            print(
+                f"[SUCCESS] HTTP {rpc_response.status_code}: Configuration saved to NVRAM (write memory complete)."
+            )
         else:
-            print(f"[WARNING] Failed to save config via RPC (HTTP {rpc_response.status_code}): {rpc_response.text}")
+            print(
+                f"[WARNING] Failed to save config via RPC (HTTP {rpc_response.status_code}): {rpc_response.text}"
+            )
 
     except requests.exceptions.RequestException as err:
         print(f"[CONNECTION ERROR] Save-config RPC failed: {err}")
@@ -54,9 +59,7 @@ def push_interface_state(yaml_filepath: str) -> None:
     interface_entry = parsed_dict["Cisco-IOS-XE-native:interface"]["GigabitEthernet"][0]
     interface_id = interface_entry["name"]
 
-    put_payload = {
-        "Cisco-IOS-XE-native:GigabitEthernet": interface_entry
-    }
+    put_payload = {"Cisco-IOS-XE-native:GigabitEthernet": interface_entry}
 
     # 4. Construct exact RESTCONF resource URI and headers
     url = f"https://{host}/restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet={interface_id}"
@@ -79,7 +82,9 @@ def push_interface_state(yaml_filepath: str) -> None:
 
         # 6. Verify immediate sandbox response and persist configuration to NVRAM
         if response.status_code in (200, 201, 204):
-            print(f"[SUCCESS] HTTP {response.status_code}: Administrative state updated cleanly.")
+            print(
+                f"[SUCCESS] HTTP {response.status_code}: Administrative state updated cleanly."
+            )
             save_running_config(host, username, password, headers)
         else:
             print(f"[FAILED] HTTP {response.status_code}: {response.text}")
@@ -90,6 +95,3 @@ def push_interface_state(yaml_filepath: str) -> None:
 
 if __name__ == "__main__":
     push_interface_state("interface_provision_2.yaml")
-
-
-

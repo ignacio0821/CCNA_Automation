@@ -13,7 +13,7 @@ def load_network_inventory(file_path):
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Missing logical configuration asset: {file_path}")
 
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         return yaml.safe_load(file)
 
 
@@ -22,29 +22,33 @@ def deploy_path_policy(router):
     base_url = f"https://{router['mgmt_ip']}/restconf/data/ietf-interfaces:interfaces"
     headers = {
         "Accept": "application/yang-data+json",
-        "Content-Type": "application/yang-data+json"
+        "Content-Type": "application/yang-data+json",
     }
     auth = ("developer", "Cisco123!")
 
-    print(f"\n📡 Initiating configuration push to node: {router['hostname']} ({router['mgmt_ip']})")
+    print(
+        f"\n📡 Initiating configuration push to node: {router['hostname']} ({router['mgmt_ip']})"
+    )
 
-    for interface in router['interfaces']:
-        print(f"  ↳ Configuring {interface['name']} | Direct Link Cost [Metric: {interface['metric']}]")
+    for interface in router["interfaces"]:
+        print(
+            f"  ↳ Configuring {interface['name']} | Direct Link Cost [Metric: {interface['metric']}]"
+        )
 
         # RESTCONF Interface Configuration Payload
         payload = {
             "ietf-interfaces:interface": {
-                "name": interface['name'],
+                "name": interface["name"],
                 "type": "iana-if-type:ethernetCsmacd",
                 "enabled": True,
                 "ietf-ip:ipv4": {
                     "address": [
                         {
-                            "ip": interface['ip_address'].split('/')[0],
-                            "netmask": "255.255.255.252"  # Transposing /30 topology constraint
+                            "ip": interface["ip_address"].split("/")[0],
+                            "netmask": "255.255.255.252",  # Transposing /30 topology constraint
                         }
                     ]
-                }
+                },
             }
         }
 
@@ -57,12 +61,14 @@ if __name__ == "__main__":
 
     try:
         data_matrix = load_network_inventory(inventory_path)
-        routers = data_matrix['infrastructure_inventory']['backbone_routers']
+        routers = data_matrix["infrastructure_inventory"]["backbone_routers"]
 
         for router_node in routers:
             deploy_path_policy(router_node)
 
-        print("\n✅ Execution Complete: Infrastructure states successfully aligned to path policy.")
+        print(
+            "\n✅ Execution Complete: Infrastructure states successfully aligned to path policy."
+        )
 
     except Exception as e:
         print(f"\n❌ Execution Interrupted: {str(e)}")

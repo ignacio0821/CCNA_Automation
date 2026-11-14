@@ -21,7 +21,9 @@ try:
 
         # Execute command and instantly return a structured Python data structure
         print("Executing operational data gathering command...")
-        structured_output = connection.send_command("show ip interface brief", use_textfsm=True)
+        structured_output = connection.send_command(
+            "show ip interface brief", use_textfsm=True
+        )
 
         print("\n--- [Data Payload Extraction Successful] ---")
 
@@ -31,15 +33,25 @@ try:
             for interface in structured_output:
                 # Double-check that inner objects are indeed dictionary elements
                 if isinstance(interface, dict):
-                    if interface.get("status") == "up" and interface.get("protocol") == "up":
-                        print(f"  -> Interface: {interface.get('interface')} -> IP: {interface.get('ip_address')}")
+                    if (
+                        interface.get("status") == "up"
+                        and interface.get("protocol") == "up"
+                    ):
+                        print(
+                            f"  -> Interface: {interface.get('interface')} -> IP: {interface.get('ip_address')}"
+                        )
         else:
-            print("X [ERROR]: TextFSM failed to return structured data. Expected a list structure.")
+            print(
+                "X [ERROR]: TextFSM failed to return structured data. Expected a list structure."
+            )
 
 except NetmikoTimeoutException:
-    print(f"X [CRITICAL ERROR]: Connection timed out to host {router_profile['host']}. Check routing topology.")
+    print(
+        f"X [CRITICAL ERROR]: Connection timed out to host {router_profile['host']}. Check routing topology."
+    )
 except NetmikoAuthenticationException:
-    print("X [CRITICAL ERROR]: Authentication failed. Verify credentials in router_profile mapping.")
+    print(
+        "X [CRITICAL ERROR]: Authentication failed. Verify credentials in router_profile mapping."
+    )
 except Exception as e:
     print(f"X [UNEXPECTED ERROR]: {str(e)}")
-

@@ -16,6 +16,7 @@ TARGET_NODE = {
     "password": os.environ["CML_PASSWORD"],
 }
 
+
 def verify_data_plane_reachability():
     # Build complete destination URI explicitly
     base_uri = f"https://{TARGET_NODE['host']}:{TARGET_NODE['port']}"
@@ -25,7 +26,7 @@ def verify_data_plane_reachability():
     # Fully qualified media types
     strict_headers = {
         "Accept": "application/yang-data+json",
-        "Content-Type": "application/yang-data+json"
+        "Content-Type": "application/yang-data+json",
     }
 
     explicit_auth = (TARGET_NODE["username"], TARGET_NODE["password"])
@@ -38,20 +39,26 @@ def verify_data_plane_reachability():
             headers=strict_headers,
             auth=explicit_auth,
             timeout=5,
-            verify=False  # Required bypass for self-signed certificates
+            verify=False,  # Required bypass for self-signed certificates
         )
 
         # Interrogate return codes cleanly
         if response.status_code == 200:
             print("[+] SYSTEM CAPTURE SUCCESSFUL (200 OK)")
-            print(f"[+] Native configuration payload character length: {len(response.text)}")
+            print(
+                f"[+] Native configuration payload character length: {len(response.text)}"
+            )
             return True
         else:
-            print(f"[-] Target rejected connection. HTTP Status Code: {response.status_code}")
+            print(
+                f"[-] Target rejected connection. HTTP Status Code: {response.status_code}"
+            )
             return False
 
     except requests.exceptions.Timeout:
-        print("[-] Failure Error: Connection timed out. Check routing configuration or firewalls.")
+        print(
+            "[-] Failure Error: Connection timed out. Check routing configuration or firewalls."
+        )
         return False
     except requests.exceptions.RequestException as error_msg:
         print(f"[-] Structural Connection Failure: {error_msg}")

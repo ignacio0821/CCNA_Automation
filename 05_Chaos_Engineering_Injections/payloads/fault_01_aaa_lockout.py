@@ -29,8 +29,11 @@ FAULT_METADATA = {
     "vector_id": "CHOS_MONK_01",
     "target_ios_xe_service": "RESTCONF-DMI-DAEMON",
     "simulated_http_fault_trigger": 401,
-    "recovery_revert_command": "aaa authorization exec default local"
+    "recovery_revert_command": "aaa authorization exec default local",
 }
 
+
 def verify_fault_relevance():
-    print(f"[!] INJECTION RUNNING: Verifying resilience against fault {FAULT_METADATA['vector_id']}.")
+    print(
+        f"[!] INJECTION RUNNING: Verifying resilience against fault {FAULT_METADATA['vector_id']}."
+    )

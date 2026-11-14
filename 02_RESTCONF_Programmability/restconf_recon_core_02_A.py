@@ -10,63 +10,40 @@ restconf_core_02_A_payload = {
             {
                 "name": "1",
                 "description": "HOST_BRIDGE_TRANSIT",
-                "ip": {
-                    "address": {
-                        "dhcp": {}
-                    }
-                },
-                "Cisco-IOS-XE-ethernet:negotiation": {
-                    "auto": True
-                }
+                "ip": {"address": {"dhcp": {}}},
+                "Cisco-IOS-XE-ethernet:negotiation": {"auto": True},
             },
             {
                 "name": "2",
                 "description": "OOB_PRODUCTION_BACKBONE",
                 "ip": {
                     "address": {
-                        "primary": {
-                            "address": "10.255.0.12",
-                            "mask": "255.255.255.0"
-                        }
+                        "primary": {"address": "10.255.0.12", "mask": "255.255.255.0"}
                     }
                 },
                 "ipv6": {
-                    "address": {
-                        "prefix-list": [
-                            {
-                                "prefix": "2001:DB8:CCAA::12/64"
-                            }
-                        ]
-                    }
+                    "address": {"prefix-list": [{"prefix": "2001:DB8:CCAA::12/64"}]}
                 },
-                "Cisco-IOS-XE-ethernet:negotiation": {
-                    "auto": True
-                }
+                "Cisco-IOS-XE-ethernet:negotiation": {"auto": True},
             },
             {
                 "name": "3",
-                "shutdown": [
-                    None
-                ],
-                "Cisco-IOS-XE-ethernet:negotiation": {
-                    "auto": True
-                }
+                "shutdown": [None],
+                "Cisco-IOS-XE-ethernet:negotiation": {"auto": True},
             },
             {
                 "name": "4",
-                "shutdown": [
-                    None
-                ],
-                "Cisco-IOS-XE-ethernet:negotiation": {
-                    "auto": True
-                }
-            }
+                "shutdown": [None],
+                "Cisco-IOS-XE-ethernet:negotiation": {"auto": True},
+            },
         ]
     }
 }
 
 # STEP 1: Safely isolate the core list array from the dictionary structure
-interface_list = restconf_core_02_A_payload["Cisco-IOS-XE-native:interface"]["GigabitEthernet"]
+interface_list = restconf_core_02_A_payload["Cisco-IOS-XE-native:interface"][
+    "GigabitEthernet"
+]
 
 # Print header metadata
 print("\n" + "=" * 50)
@@ -121,10 +98,9 @@ for GigabitEthernet in interface_list:
 
         print(f"IPv6 Prefix     : {', '.join(ipv6_addresses)}")
 
-
     except (KeyError, IndexError) as error_token:
         # Fallback tracking if a specific entry block structure breaks
-        broken_port = GigabitEthernet.get('name', 'UNKNOWN')
+        broken_port = GigabitEthernet.get("name", "UNKNOWN")
         print(f"CRITICAL MALFORMED PAYLOAD ERROR DETECTED ON PORT: {broken_port}")
         print("=" * 50)
         raise ValueError(

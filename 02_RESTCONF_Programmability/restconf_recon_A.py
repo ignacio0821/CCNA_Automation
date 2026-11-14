@@ -1,4 +1,3 @@
-
 # FILE: restconf_recon_A.py
 mock_restconf_payload = {
     "ietf-interfaces:interfaces": {
@@ -9,27 +8,15 @@ mock_restconf_payload = {
                 "type": "iana-if-type:ethernetCsmacd",
                 "enabled": True,
                 "ietf-ip:ipv4": {
-                    "address": [
-                        {
-                            "ip": "192.168.91.130",
-                            "netmask": "255.255.255.0"
-                        }
-                    ]
-                }
+                    "address": [{"ip": "192.168.91.130", "netmask": "255.255.255.0"}]
+                },
             },  # <-- Comma keeps the list open for the next item
             {
                 "name": "GigabitEthernet0/1",
                 "description": "",
                 "type": "iana-if-type:",
                 "enabled": False,
-                "ietf-ip:ipv4": {
-                    "address": [
-                        {
-                            "ip": "",
-                            "netmask": ""
-                        }
-                    ]
-                }
+                "ietf-ip:ipv4": {"address": [{"ip": "", "netmask": ""}]},
             },  # <-- Comma keeps the list open for the next item
             {
                 "name": "GigabitEthernet0/2",
@@ -37,26 +24,18 @@ mock_restconf_payload = {
                 "type": "iana-if-type:ethernetCsmacd",
                 "enabled": True,
                 "ietf-ip:ipv4": {
-                    "address": [
-                        {
-                            "ip": "10.0.0.2",
-                            "netmask": "255.255.255.252"
-                        }
-                    ]
-                }
+                    "address": [{"ip": "10.0.0.2", "netmask": "255.255.255.252"}]
+                },
             },  # <-- Comma keeps the list open for the final item
             {
                 "name": "GigabitEthernet0/3",
                 "description": "Unconfigured Port",
                 "type": "iana-if-type:ethernetCsmacd",
-                "enabled": False
-            }  # <-- End of fourth interface profile card
+                "enabled": False,
+            },  # <-- End of fourth interface profile card
         ]  # <-- THIS SQUARE BRACKET MUST SIT HERE TO ENCLOSE ALL 4 PORT PROFILE CARDS!
     }
 }
-
-
-
 
 
 # ======================================================================================
@@ -100,10 +79,13 @@ for interface in interface_list:
 
     except (KeyError, IndexError) as error_token:
         # If the incoming payload format is completely broken, intercept the crash here!
-        print(f"CRITICAL MALFORMED PAYLOAD ERROR DETECTED ON PORT: {interface.get('name', 'UNKNOWN')}")
+        print(
+            f"CRITICAL MALFORMED PAYLOAD ERROR DETECTED ON PORT: {interface.get('name', 'UNKNOWN')}"
+        )
         print("=" * 50)
         # Raise a clean custom error up to the corporate management system
-        raise ValueError(f"Automation execution halted. Router data structure is corrupt. Root cause: {error_token}")
+        raise ValueError(
+            f"Automation execution halted. Router data structure is corrupt. Root cause: {error_token}"
+        )
 
 print("============ END OF PRODUCTION DEVICE AUDIT ============\n")
-

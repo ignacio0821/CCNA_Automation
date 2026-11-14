@@ -17,10 +17,7 @@ device = {
 }
 
 # 2. Recovery Commands to Undo the Hallucinated State
-recovery_commands = [
-    "aaa authorization exec default local",
-    "do write memory"
-]
+recovery_commands = ["aaa authorization exec default local", "do write memory"]
 
 print("[*] Initiating emergency recovery loop for Edge-01...")
 
@@ -42,14 +39,19 @@ try:
         print(f"[+] Active AAA Configuration State:\n{verification}")
 
         if "exec default local" in verification:
-            print("[SUCCESS] AAA executive authorization state restored programmatically.")
+            print(
+                "[SUCCESS] AAA executive authorization state restored programmatically."
+            )
         else:
-            print("[FAIL] Command injected but verification check failed to read state change.")
+            print(
+                "[FAIL] Command injected but verification check failed to read state change."
+            )
 
 except (NetmikoTimeoutException, NetmikoAuthenticationException) as auth_err:
     print(f"[CRITICAL FAILURE] Blocked at AAA authentication level: {auth_err}")
     print(
-        "[!] ACTION REQUIRED: Do not close any open terminal windows to this node. Use the CML Console port directly.")
+        "[!] ACTION REQUIRED: Do not close any open terminal windows to this node. Use the CML Console port directly."
+    )
 except Exception as e:
     print(f"[UNKNOWN ERROR] Execution stalled: {e}")
     sys.exit(1)

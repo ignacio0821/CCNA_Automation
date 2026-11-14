@@ -3,22 +3,14 @@ def is_member(element, linear_sequence):
     # The sequence is a list/iterable and will return a boolean
     # Return True if found, otherwise Return False
 
-
-
-
-
-
-
-# How to Find Power Set?
-# In order to find a power set, follow these steps:
-#
-# Start with a null or empty set.
-# Then add all combinations of subsets with one element.
-# Then add all combinations of subsets with two elements.
-# Do this till you reach the subsets with N-1 elements (where N is the total number of elements in the original set).
-# Then add the original set.
-
-
+    # How to Find Power Set?
+    # In order to find a power set, follow these steps:
+    #
+    # Start with a null or empty set.
+    # Then add all combinations of subsets with one element.
+    # Then add all combinations of subsets with two elements.
+    # Do this till you reach the subsets with N-1 elements (where N is the total number of elements in the original set).
+    # Then add the original set.
 
     """
     DESIGN MATRIX: 3-TOKEN POWER SET GENERATION

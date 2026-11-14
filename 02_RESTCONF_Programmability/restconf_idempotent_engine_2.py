@@ -26,7 +26,7 @@ auth_credentials = (username, password)
 # RFC 8040 Canonical YANG Data-Model Header Media Types
 restconf_headers = {
     "Accept": "application/yang-data+json",
-    "Content-Type": "application/yang-data+json"
+    "Content-Type": "application/yang-data+json",
 }
 
 # Iterate through each physical node in our isolated CML environment
@@ -43,7 +43,7 @@ for node in CLUSTER_NODES:
             headers=restconf_headers,
             auth=auth_credentials,
             verify=False,
-            timeout=5.0  # Guard window to prevent infinite script hanging
+            timeout=5.0,  # Guard window to prevent infinite script hanging
         )
 
         # Catch unexpected HTTP server errors (4xx / 5xx) before parsing keys
@@ -53,7 +53,9 @@ for node in CLUSTER_NODES:
         response_data = response.json()
 
         # Traverse safely down to the media type array list layer
-        interfaces_list = response_data.get("Cisco-IOS-XE-native:interface", {}).get("GigabitEthernet", [])
+        interfaces_list = response_data.get("Cisco-IOS-XE-native:interface", {}).get(
+            "GigabitEthernet", []
+        )
 
         # GATE 1: Iterate through each physical slot block returned by the router
         for intf in interfaces_list:
@@ -67,20 +69,31 @@ for node in CLUSTER_NODES:
 
                 if current_description == target_template:
                     print(
-                        f"[*] IDEMPOTENT BYPASS: Node {node} GigabitEthernet2 description is already aligned. Skipping mutation.")
+                        f"[*] IDEMPOTENT BYPASS: Node {node} GigabitEthernet2 description is already aligned. Skipping mutation."
+                    )
                 else:
-                    print(f"[!] STATE MISMATCH IDENTIFIED: Node {node} description is: '{current_description}'")
-                    print(f"[>] Action: Initializing configuration state modification sequence...")
+                    print(
+                        f"[!] STATE MISMATCH IDENTIFIED: Node {node} description is: '{current_description}'"
+                    )
+                    print(
+                        f"[>] Action: Initializing configuration state modification sequence..."
+                    )
 
     except requests.exceptions.Timeout:
-        print(f"[-] CRITICAL ERROR: Connection timed out on target node {node}. Bypassing...")
+        print(
+            f"[-] CRITICAL ERROR: Connection timed out on target node {node}. Bypassing..."
+        )
         continue
 
     except requests.exceptions.HTTPError as http_err:
         status_code = response.status_code
-        print(f"[-] API ERROR: Node {node} returned HTTP Status Code: {status_code}. Bypassing...")
+        print(
+            f"[-] API ERROR: Node {node} returned HTTP Status Code: {status_code}. Bypassing..."
+        )
         continue
 
     except requests.exceptions.RequestException as general_err:
-        print(f"[-] SYSTEM FAULT: Unhandled connection anomaly on node {node}: {general_err}")
+        print(
+            f"[-] SYSTEM FAULT: Unhandled connection anomaly on node {node}: {general_err}"
+        )
         continue

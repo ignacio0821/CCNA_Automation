@@ -10,42 +10,24 @@ restconf_B_payload = {
             {
                 "name": "1",
                 "description": "LINK_TO_POSTMAN_DESKTOP_AGENT",
-                "ip": {
-                    "address": {
-                        "dhcp": {}
-                    }
-                },
-                "Cisco-IOS-XE-ethernet:negotiation": {
-                    "auto": True
-                }
+                "ip": {"address": {"dhcp": {}}},
+                "Cisco-IOS-XE-ethernet:negotiation": {"auto": True},
             },
             {
                 "name": "2",
-                "shutdown": [
-                    None
-                ],
-                "Cisco-IOS-XE-ethernet:negotiation": {
-                    "auto": True
-                }
+                "shutdown": [None],
+                "Cisco-IOS-XE-ethernet:negotiation": {"auto": True},
             },
             {
                 "name": "3",
-                "shutdown": [
-                    None
-                ],
-                "Cisco-IOS-XE-ethernet:negotiation": {
-                    "auto": True
-                }
+                "shutdown": [None],
+                "Cisco-IOS-XE-ethernet:negotiation": {"auto": True},
             },
             {
                 "name": "4",
-                "shutdown": [
-                    None
-                ],
-                "Cisco-IOS-XE-ethernet:negotiation": {
-                    "auto": True
-                }
-            }
+                "shutdown": [None],
+                "Cisco-IOS-XE-ethernet:negotiation": {"auto": True},
+            },
         ]
     }
 }
@@ -92,7 +74,7 @@ for GigabitEthernet in interface_list:
 
     except (KeyError, IndexError) as error_token:
         # Fallback tracking if a specific entry block structure breaks
-        broken_port = GigabitEthernet.get('name', 'UNKNOWN')
+        broken_port = GigabitEthernet.get("name", "UNKNOWN")
         print(f"CRITICAL MALFORMED PAYLOAD ERROR DETECTED ON PORT: {broken_port}")
         print("=" * 50)
         raise ValueError(

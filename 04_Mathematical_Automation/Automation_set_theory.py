@@ -19,7 +19,11 @@ if isinstance(structured_output, list):
     for interface in structured_output:
         # Double-check that inner objects are indeed dictionary elements
         if isinstance(interface, dict):
-            if interface.get('status') == 'up' and interface.get('protocol') == 'up':
-                print(f"  📌 Interface: {interface.get('interface')} -> IP: {interface.get('ip_address')}")
+            if interface.get("status") == "up" and interface.get("protocol") == "up":
+                print(
+                    f"  📌 Interface: {interface.get('interface')} -> IP: {interface.get('ip_address')}"
+                )
 else:
-    print("❌ [ERROR]: TextFSM failed to return structured data. Expected a list structure.")
+    print(
+        "❌ [ERROR]: TextFSM failed to return structured data. Expected a list structure."
+    )

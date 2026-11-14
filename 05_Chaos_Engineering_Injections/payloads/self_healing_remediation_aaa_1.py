@@ -22,16 +22,26 @@ ssh_device_profile = {
 
 restconf_headers = {
     "Accept": "application/yang-data+json",
-    "Content-Type": "application/yang-data+json"
+    "Content-Type": "application/yang-data+json",
 }
 push_url = f"https://{TARGET_NODE}/restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=2"
-mutated_payload = {"Cisco-IOS-XE-native:GigabitEthernet": [{"name": "2", "description": "DOM_PRODUCTION_BACKBONE"}]}
+mutated_payload = {
+    "Cisco-IOS-XE-native:GigabitEthernet": [
+        {"name": "2", "description": "DOM_PRODUCTION_BACKBONE"}
+    ]
+}
 
 
 def execute_state_push():
     print(f"[>] Attempting RESTCONF State Push to Node: {TARGET_NODE}")
-    response = requests.patch(url=push_url, headers=restconf_headers, json=mutated_payload, auth=(username, password),
-                              verify=False, timeout=3.0)
+    response = requests.patch(
+        url=push_url,
+        headers=restconf_headers,
+        json=mutated_payload,
+        auth=(username, password),
+        verify=False,
+        timeout=3.0,
+    )
     response.raise_for_status()
 
 
@@ -42,8 +52,12 @@ try:
 
 except requests.exceptions.HTTPError as http_err:
     if http_err.response.status_code == 401:
-        print(f"[!] SELF-HEALING TRIGGERED: Caught AAA authorization lockout (401) on Node {TARGET_NODE}!")
-        print("[>] Pushing programmatic configuration restoration via Netmiko stream...")
+        print(
+            f"[!] SELF-HEALING TRIGGERED: Caught AAA authorization lockout (401) on Node {TARGET_NODE}!"
+        )
+        print(
+            "[>] Pushing programmatic configuration restoration via Netmiko stream..."
+        )
 
         # Connect and push the repair commands as a single atomic data block
         connection = ConnectHandler(**ssh_device_profile)
@@ -53,8 +67,12 @@ except requests.exceptions.HTTPError as http_err:
         connection.send_config_set(repair_commands)
         connection.disconnect()
 
-        print("[+] Programmatic remediation complete. Re-executing RESTCONF validation...")
+        print(
+            "[+] Programmatic remediation complete. Re-executing RESTCONF validation..."
+        )
 
         # Re-attempt the RESTCONF state push now that the gate is healed
         execute_state_push()
-        print("[++ ] CRITICAL SUCCESS: Control plane healed programmatically. State push committed!")
+        print(
+            "[++ ] CRITICAL SUCCESS: Control plane healed programmatically. State push committed!"
+        )

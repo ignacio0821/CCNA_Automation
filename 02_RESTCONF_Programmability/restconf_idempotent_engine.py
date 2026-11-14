@@ -20,7 +20,7 @@ AUTH = (os.getenv("CML_USERNAME", "netops_admin"), os.environ["CML_PASSWORD"])
 
 HEADERS = {
     "Accept": "application/yang-data+json",
-    "Content-Type": "application/yang-data+json"
+    "Content-Type": "application/yang-data+json",
 }
 
 # Explicit Target State Constraint
@@ -41,7 +41,9 @@ def enforce_idempotent_domain():
 
         try:
             # PHASE 1: READ & EVALUATE STATE (The Logic Gate)
-            get_res = requests.get(url, headers=HEADERS, auth=AUTH, verify=False, timeout=3)
+            get_res = requests.get(
+                url, headers=HEADERS, auth=AUTH, verify=False, timeout=3
+            )
 
             current_domain = None
             if get_res.status_code == 200:
@@ -52,16 +54,16 @@ def enforce_idempotent_domain():
 
             # PHASE 2: MUTATE ONLY IF DRIFT DETECTED (Idempotent Constraint)
             if current_domain == DESIRED_DOMAIN:
-                print(f"    [+ STATE VERIFIED ]: Node matches desired state. No mutation required.")
+                print(
+                    f"    [+ STATE VERIFIED ]: Node matches desired state. No mutation required."
+                )
             else:
-                print(f"    [! DRIFT DETECTED ]: State mismatch. Deploying RESTCONF payload adjustment...")
+                print(
+                    f"    [! DRIFT DETECTED ]: State mismatch. Deploying RESTCONF payload adjustment..."
+                )
 
                 # Payload construction explicitly matching the YANG model schema
-                payload = {
-                    "Cisco-IOS-XE-native:domain": {
-                        "name": DESIRED_DOMAIN
-                    }
-                }
+                payload = {"Cisco-IOS-XE-native:domain": {"name": DESIRED_DOMAIN}}
 
                 # Using PUT to completely overwrite the resource target with our defined state
                 put_res = requests.put(
@@ -70,14 +72,17 @@ def enforce_idempotent_domain():
                     auth=AUTH,
                     data=json.dumps(payload),
                     verify=False,
-                    timeout=4
+                    timeout=4,
                 )
 
                 if put_res.status_code in (200, 204):
                     print(
-                        f"    [+ REPAIR SUCCESS ]: Configuration synchronized successfully (HTTP {put_res.status_code}).")
+                        f"    [+ REPAIR SUCCESS ]: Configuration synchronized successfully (HTTP {put_res.status_code})."
+                    )
                 else:
-                    print(f"    [-] REPAIR FAILED  : Device rejected state update. HTTP Code: {put_res.status_code}")
+                    print(
+                        f"    [-] REPAIR FAILED  : Device rejected state update. HTTP Code: {put_res.status_code}"
+                    )
 
         except requests.exceptions.RequestException as e:
             print(f"    [-] CRITICAL ERROR : Network socket execution failure: {e}")

@@ -45,7 +45,7 @@ subnet_mask = ip_block.get("subnet_mask")
 
 # Reconstruct variables into a canonical Cisco Native JSON PATCH Layout
 mutated_payload = {
-    f"Cisco-IOS-XE-native:{intf_type}":[
+    f"Cisco-IOS-XE-native:{intf_type}": [
         {
             "name": intf_name,
             "description": description_str,
@@ -56,7 +56,7 @@ mutated_payload = {
                         "mask": subnet_mask,
                     }
                 }
-            }
+            },
         }
     ]
 }
@@ -76,49 +76,18 @@ try:
         json=mutated_payload,
         auth=auth_credentials,
         verify=False,
-        timeout=5.0
+        timeout=5.0,
     )
 
-# An HTTP 24 No Content status code is standard for a successful RESTCONF PATCH
-    if mutation_response.status_code in[200, 201, 204]:
-        print(f"[+] SUCCESS: State mutation successfully committed to Node {TARGET_NODE}!")
+    # An HTTP 24 No Content status code is standard for a successful RESTCONF PATCH
+    if mutation_response.status_code in [200, 201, 204]:
+        print(
+            f"[+] SUCCESS: State mutation successfully committed to Node {TARGET_NODE}!"
+        )
     else:
-        print(f"[-] WARNING: Unexpected server status returned: {mutation_response.status_code}")
+        print(
+            f"[-] WARNING: Unexpected server status returned: {mutation_response.status_code}"
+        )
 
 except requests.exceptions.RequestException as err:
     print(f"[-] CRITICAL ENGINE BLOCKED: State push filed over network wire: {err}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

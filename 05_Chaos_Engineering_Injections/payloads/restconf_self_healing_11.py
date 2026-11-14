@@ -11,6 +11,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class DriftDetectionError(Exception):
     """Raised when a configuration push fails validation and requires self-healing."""
+
     pass
 
 
@@ -39,9 +40,13 @@ def load_golden_baseline(yaml_path: Path) -> dict:
     }
 
 
-def remediate_to_golden_baseline(host: str, username: str, password: str, golden_yaml: Path) -> None:
+def remediate_to_golden_baseline(
+    host: str, username: str, password: str, golden_yaml: Path
+) -> None:
     """Closed-loop remediation engine: enforces trusted state via HTTP PATCH and saves NVRAM."""
-    print("\n[SELF-HEALING] Intercepted fault. Initiating automated HTTP PATCH rollback...")
+    print(
+        "\n[SELF-HEALING] Intercepted fault. Initiating automated HTTP PATCH rollback..."
+    )
     golden_payload = load_golden_baseline(golden_yaml)
     interface_id = golden_payload["Cisco-IOS-XE-native:GigabitEthernet"]["name"]
 
@@ -63,17 +68,28 @@ def remediate_to_golden_baseline(host: str, username: str, password: str, golden
         )
 
         if patch_resp.status_code in (200, 201, 204):
-            print(f"  -> [HEALED] HTTP {patch_resp.status_code}: Golden YAML baseline re-applied via PATCH.")
+            print(
+                f"  -> [HEALED] HTTP {patch_resp.status_code}: Golden YAML baseline re-applied via PATCH."
+            )
 
             # 2. Persist healed configuration to NVRAM via save-config RPC
             rpc_url = f"https://{host}/restconf/operations/cisco-ia:save-config"
             rpc_resp = requests.post(
-                rpc_url, auth=(username, password), headers=headers, json={}, verify=False, timeout=15
+                rpc_url,
+                auth=(username, password),
+                headers=headers,
+                json={},
+                verify=False,
+                timeout=15,
             )
             if rpc_resp.status_code in (200, 204):
-                print(f"  -> [PERSISTED] HTTP {rpc_resp.status_code}: Healed state written to NVRAM.")
+                print(
+                    f"  -> [PERSISTED] HTTP {rpc_resp.status_code}: Healed state written to NVRAM."
+                )
         else:
-            print(f"  -> [CRITICAL] Self-healing PATCH failed (HTTP {patch_resp.status_code}): {patch_resp.text}")
+            print(
+                f"  -> [CRITICAL] Self-healing PATCH failed (HTTP {patch_resp.status_code}): {patch_resp.text}"
+            )
 
     except requests.exceptions.RequestException as err:
         print(f"  -> [CRITICAL] Network unreachable during self-healing loop: {err}")
@@ -92,7 +108,9 @@ def run_closed_loop_pipeline() -> None:
 
     # Resolve golden YAML path relative to 05_Chaos_Engineering_Injections/payloads/
     project_root = Path(__file__).resolve().parents[2]
-    golden_yaml_path = project_root / "02_RESTCONF_Programmability" / "interface_provision_2.yaml"
+    golden_yaml_path = (
+        project_root / "02_RESTCONF_Programmability" / "interface_provision_2.yaml"
+    )
 
     url = f"https://{host}/restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=2"
     headers = {
@@ -122,11 +140,18 @@ def run_closed_loop_pipeline() -> None:
     try:
         print("[STEP 1] Attempting state push to Core-02...")
         response = requests.put(
-            url, auth=(username, password), headers=headers, json=corrupted_payload, verify=False, timeout=10
+            url,
+            auth=(username, password),
+            headers=headers,
+            json=corrupted_payload,
+            verify=False,
+            timeout=10,
         )
 
         if response.status_code not in (200, 201, 204):
-            raise DriftDetectionError(f"Router rejected state push with HTTP {response.status_code}")
+            raise DriftDetectionError(
+                f"Router rejected state push with HTTP {response.status_code}"
+            )
 
         print("[SUCCESS] State push applied cleanly without drift.")
 

@@ -28,7 +28,9 @@ try:
     connection.disconnect()
 
 except NetmikoTimeoutException:
-    print("\n[!] Error: Unable to reach the control plane. Check your workstation routing table.")
+    print(
+        "\n[!] Error: Unable to reach the control plane. Check your workstation routing table."
+    )
 except NetmikoAuthenticationException:
     print("\n[!] Error: The AAA engine rejected the configured credentials.")
 except Exception as e:
