@@ -1,12 +1,16 @@
+import os
+from dotenv import load_dotenv
 from netmiko import ConnectHandler
 from netmiko.exceptions import NetmikoTimeoutException, NetmikoAuthenticationException
+
+load_dotenv()
 
 # Define the connection parameters matching your live CML state
 router_profile = {
     "device_type": "cisco_ios",
-    "host": "192.168.91.130",  # Your exact live DHCP IP
-    "username": "admin",
-    "password": "Cisco123",
+    "host": os.getenv("NETMIKO_A_HOST", "198.51.100.10"),
+    "username": os.getenv("CML_USERNAME", "netops_admin"),
+    "password": os.environ["CML_PASSWORD"],
 }
 
 try:
@@ -27,14 +31,15 @@ try:
             for interface in structured_output:
                 # Double-check that inner objects are indeed dictionary elements
                 if isinstance(interface, dict):
-                    if interface.get('status') == 'up' and interface.get('protocol') == 'up':
-                        print(f"  📌 Interface: {interface.get('interface')} -> IP: {interface.get('ip_address')}")
+                    if interface.get("status") == "up" and interface.get("protocol") == "up":
+                        print(f"  -> Interface: {interface.get('interface')} -> IP: {interface.get('ip_address')}")
         else:
-            print("❌ [ERROR]: TextFSM failed to return structured data. Expected a list structure.")
+            print("X [ERROR]: TextFSM failed to return structured data. Expected a list structure.")
 
-  except NetmikoTimeoutException:
-      print(f"❌ [CRITICAL ERROR]: Connection timed out to host {router_profile['host']}. Check routing topology.")
-  except NetmikoAuthenticationException:
-      print("❌ [CRITICAL ERROR]: Authentication failed. Verify credentials in router_profile mapping.")
-  except Exception as e:
-      print(f"❌ [UNEXPECTED ERROR]: {str(e)}")
+except NetmikoTimeoutException:
+    print(f"X [CRITICAL ERROR]: Connection timed out to host {router_profile['host']}. Check routing topology.")
+except NetmikoAuthenticationException:
+    print("X [CRITICAL ERROR]: Authentication failed. Verify credentials in router_profile mapping.")
+except Exception as e:
+    print(f"X [UNEXPECTED ERROR]: {str(e)}")
+

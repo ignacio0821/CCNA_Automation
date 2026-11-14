@@ -1,18 +1,23 @@
+import os
+import json
+from dotenv import load_dotenv
 import requests
 import urllib3
-import json
+
+load_dotenv()
 
 # Disable self-signed SSL certificate alerts
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 CLUSTER_INVENTORY = [
-    {"hostname": "Core-01", "ip": "192.168.91.132"},
-    {"hostname": "Core-02", "ip": "192.168.91.135"},
-    {"hostname": "Edge-01", "ip": "192.168.91.134"},
-    {"hostname": "Edge-02", "ip": "192.168.91.136"}
+    {"hostname": "Core-01", "ip": os.getenv("CORE01_IP", "198.51.100.132")},
+    {"hostname": "Core-02", "ip": os.getenv("CORE02_IP", "198.51.100.135")},
+    {"hostname": "Edge-01", "ip": os.getenv("EDGE01_HOST", "198.51.100.134")},
+    {"hostname": "Edge-02", "ip": os.getenv("EDGE02_IP", "198.51.100.136")},
 ]
 
-AUTH = ("admin", "Cisco123")
+AUTH = (os.getenv("CML_USERNAME", "netops_admin"), os.environ["CML_PASSWORD"])
+
 HEADERS = {
     "Accept": "application/yang-data+json",
     "Content-Type": "application/yang-data+json"
@@ -68,7 +73,7 @@ def enforce_idempotent_domain():
                     timeout=4
                 )
 
-                if put_res.status_code in:
+                if put_res.status_code in (200, 204):
                     print(
                         f"    [+ REPAIR SUCCESS ]: Configuration synchronized successfully (HTTP {put_res.status_code}).")
                 else:

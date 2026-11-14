@@ -11,3 +11,10 @@ repos:
       - id: check-json
         exclude: '.*malformed_schema\.json$'
       - id: detect-private-key
+  - repo: local
+    hooks:
+      - id: python-compileall
+        name: Python Compileall Syntax Check
+        entry: python -m compileall -q .
+        language: system
+        pass_filenames: false
